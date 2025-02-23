@@ -184,8 +184,9 @@ export async function fetchCustomers() {
   }
 }
 
+const CUSTOMERS_PER_PAGE = 2;
 export async function fetchFilteredCustomers(query: string, currentPage: number) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const offset = (currentPage - 1) * CUSTOMERS_PER_PAGE;
   try {
     const data = await sql<CustomersTableType[]>`
 		SELECT
@@ -203,7 +204,7 @@ export async function fetchFilteredCustomers(query: string, currentPage: number)
         customers.email ILIKE ${`%${query}%`}
 		GROUP BY customers.id, customers.name, customers.email, customers.image_url
 		ORDER BY customers.name ASC
-    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    LIMIT ${CUSTOMERS_PER_PAGE} OFFSET ${offset}
 	  `;
 
     const customers = data.map((customer) => ({
@@ -227,7 +228,7 @@ export async function fetchCustomersPages(query: string) {
       WHERE
         customers.name ILIKE ${`%${query}%`} OR customers.email ILIKE ${`%${query}%`}
     `;
-    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(data[0].count) / CUSTOMERS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error("Database Error: ", error);
