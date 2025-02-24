@@ -4,7 +4,7 @@ import { fetchCustomersPages } from "@/app/lib/data";
 import { CustomersTableSkeleton } from "@/app/ui/skeletons";
 import { lusitana } from "@/app/ui/fonts";
 import Search from "@/app/ui/search";
-import Pagination from "@/app/ui/invoices/pagination";
+import Pagination from "@/app/ui/pagination";
 
 export default async function Page(props: {
     searchParams?: Promise<{
